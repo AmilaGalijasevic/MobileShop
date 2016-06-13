@@ -13,36 +13,37 @@ import bo.UserBoImpl;
 import dto.User;
 
 /**
- * Servlet implementation class LogInServlet
+ * Servlet implementation class RegisterServlet
  */
-@WebServlet("/LogInServlet")
-public class LogInServlet extends HttpServlet {
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		User user;
+		String email = request.getParameter("email");
+		String role = request.getParameter("role");
 
 		if (Helper.isValidUsername(username) && Helper.isValidPass(password)) {
 
+			User user = new User(username, password, email, role);
+
 			UserBoImpl bo = new UserBoImpl();
 
-			user = bo.validateUser(username, password);
-
-			if (user == null) {
+			if (bo.registerUser(user)) {
 				request.getRequestDispatcher("login.jsp").forward(request, response);
+				return;
+
+			} else {
+				request.getRequestDispatcher("register.jsp").forward(request, response);
 				return;
 			}
 
-			request.getSession().setAttribute("user", user);
-			request.getRequestDispatcher("home.jsp").forward(request, response);
-			return;
-
 		} else {
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}
 	}
-
 }
