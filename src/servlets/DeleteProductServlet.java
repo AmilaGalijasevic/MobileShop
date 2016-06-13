@@ -29,7 +29,7 @@ public class DeleteProductServlet extends HttpServlet {
 		Product product = bo.getProductId();
 
 		request.setAttribute("Product", product);
-		request.getRequestDispatcher("deletecontact.jsp").forward(request, response);
+		request.getRequestDispatcher("deleteProduct.jsp").forward(request, response);
 	}
 	**/
 
